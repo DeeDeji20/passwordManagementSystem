@@ -17,12 +17,11 @@ import java.util.regex.Pattern;
 
 @Service
 public class PasswordManagerServiceImpl implements PasswordManager{
-//    @Autowired
-    PasswordManager manager;
+
     @Autowired
     PasswordManagerRepository database;
 
-//    private User user = new User();
+    User user = new User();
 
     @Override
     public CreateUserResponse createUser(CreateUserRequest request) {
@@ -46,7 +45,7 @@ public class PasswordManagerServiceImpl implements PasswordManager{
 
     @Override
     public AddPasswordResponse addPassword(String email, AddPasswordRequest request) {
-        User user = database.findByEmail(email);
+        user = database.findByEmail(email);
         PasswordToRegister passwordToRegister = new PasswordToRegister();
         passwordToRegister.setPassword(request.getPassword());
         passwordToRegister.setUrl(request.getUrl());
@@ -54,7 +53,6 @@ public class PasswordManagerServiceImpl implements PasswordManager{
         passwordToRegister.setName(request.getName());
         user.getRegisteredPassword().add(passwordToRegister);
 
-        database.save(user);
         System.out.println(user);
         return null;
     }
@@ -66,6 +64,6 @@ public class PasswordManagerServiceImpl implements PasswordManager{
 
     @Override
     public List<PasswordToRegister> getListOfUserPassword() {
-        return null;
+        return user.getRegisteredPassword();
     }
 }
