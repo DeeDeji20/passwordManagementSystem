@@ -122,4 +122,27 @@ class PasswordManagerServiceTest {
         assertThat(response.getUserName(), is("myYoutubeUserName"));
         assertThat(response.getPassword(), is("myDeeDeji"));
     }
+
+    @Test
+    void testThatUserNameAndPasswordThatDoesntExists_throwsException(){
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setEmail("lotachi@gmail.com");
+        userRequest.setPassword("ade!ola@8b9-0V");
+        service.createUser(userRequest);
+
+        AddPasswordRequest addRequest = new AddPasswordRequest();
+        addRequest.setPassword("myDeeDeji");
+        addRequest.setName("youtube");
+        addRequest.setUrl("www.youtube.org");
+        addRequest.setUserName("myYoutubeUserName");
+        service.addPassword(userRequest.getEmail(), addRequest);
+
+        RetrievePasswordRequest request = new RetrievePasswordRequest();
+        request.setEmail("lotachi@gmail.com");
+        request.setUrl("www.youtube.org");
+//        service.retrieve(request);
+        RetrievePasswordResponse response = service.retrieve(request);
+        assertThat(response.getUserName(), is("myYoutubeUserName"));
+        assertThat(response.getPassword(), is("myDeeDeji"));
+    }
 }

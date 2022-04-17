@@ -87,7 +87,6 @@ public class PasswordManagerServiceImpl implements PasswordManager{
         log.info(user.getEmail());
         List<PasswordToRegister> passwords = getListOfUserPassword(request.getEmail());
         RetrievePasswordResponse response = new RetrievePasswordResponse();
-
         passwords.forEach(password ->{
             if(password.getUrl().equals(request.getUrl())){
                 response.setPassword(password.getPassword());
