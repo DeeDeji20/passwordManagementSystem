@@ -8,6 +8,7 @@ import com.semicolon.africa.passwordManager.dto.request.RetrievePasswordRequest;
 import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
 import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
+import com.semicolon.africa.passwordManager.exception.NonExistentUrlexception;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,23 +127,22 @@ class PasswordManagerServiceTest {
     @Test
     void testThatUserNameAndPasswordThatDoesntExists_throwsException(){
         CreateUserRequest userRequest = new CreateUserRequest();
-        userRequest.setEmail("lotachi@gmail.com");
-        userRequest.setPassword("ade!ola@8b9-0V");
+        userRequest.setEmail("esther@gmail.com");
+        userRequest.setPassword("esthergirl@!90A");
         service.createUser(userRequest);
 
         AddPasswordRequest addRequest = new AddPasswordRequest();
         addRequest.setPassword("myDeeDeji");
-        addRequest.setName("youtube");
-        addRequest.setUrl("www.youtube.org");
-        addRequest.setUserName("myYoutubeUserName");
+        addRequest.setName("customSite");
+        addRequest.setUrl("www.myCustomSite.org");
+        addRequest.setUserName("customSite");
         service.addPassword(userRequest.getEmail(), addRequest);
 
         RetrievePasswordRequest request = new RetrievePasswordRequest();
-        request.setEmail("lotachi@gmail.com");
-        request.setUrl("www.youtube.org");
+        request.setEmail("esther@gmail.com");
+        request.setUrl("www.nonExistentSite.org");
 //        service.retrieve(request);
-        RetrievePasswordResponse response = service.retrieve(request);
-        assertThat(response.getUserName(), is("myYoutubeUserName"));
-        assertThat(response.getPassword(), is("myDeeDeji"));
+//        RetrievePasswordResponse response = service.retrieve(request);
+        assertThrows(NonExistentUrlexception.class, ()-> service.retrieve(request));
     }
 }
