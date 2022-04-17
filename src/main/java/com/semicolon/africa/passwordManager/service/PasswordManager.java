@@ -4,12 +4,12 @@ import com.semicolon.africa.passwordManager.data.model.User;
 import com.semicolon.africa.passwordManager.dto.request.AddPasswordRequest;
 import com.semicolon.africa.passwordManager.dto.request.CreateUserRequest;
 import com.semicolon.africa.passwordManager.dto.request.PasswordToRegister;
+import com.semicolon.africa.passwordManager.dto.request.RetrievePasswordRequest;
 import com.semicolon.africa.passwordManager.dto.response.AddPasswordResponse;
 import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
+import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.DoubleStream;
 
 public interface PasswordManager {
     CreateUserResponse createUser(CreateUserRequest request);
@@ -17,5 +17,7 @@ public interface PasswordManager {
 
     List<User> getAllUsers();
 
-    List<PasswordToRegister> getListOfUserPassword();
+    List<PasswordToRegister> getListOfUserPassword(String email);
+
+    RetrievePasswordResponse retrieve(RetrievePasswordRequest request);
 }

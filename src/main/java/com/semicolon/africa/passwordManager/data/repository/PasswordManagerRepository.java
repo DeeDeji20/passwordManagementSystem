@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface PasswordManagerRepository extends MongoRepository<User, String> {
     User findByEmail(String email);
+    void deleteUserByEmail(String email);
 }
