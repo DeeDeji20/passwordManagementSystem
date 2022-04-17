@@ -83,8 +83,18 @@ public class PasswordManagerServiceImpl implements PasswordManager{
 
     @Override
     public RetrievePasswordResponse retrieve(RetrievePasswordRequest request) {
+        User user = database.findByEmail(request.getEmail());
+        log.info(user.getEmail());
+        List<PasswordToRegister> passwords = getListOfUserPassword(request.getEmail());
+        RetrievePasswordResponse response = new RetrievePasswordResponse();
 
-        return null;
+        passwords.forEach(password ->{
+            if(password.getUrl().equals(request.getUrl())){
+                response.setPassword(password.getPassword());
+                response.setUserName(password.getUserName());
+            }
+        });
+        return response;
     }
 }
 
