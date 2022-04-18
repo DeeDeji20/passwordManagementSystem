@@ -1,9 +1,12 @@
 package com.semicolon.africa.passwordManager.controllers;
 
 import com.semicolon.africa.passwordManager.dto.request.CreateUserRequest;
+import com.semicolon.africa.passwordManager.dto.response.ApiResponse;
 import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
+import com.semicolon.africa.passwordManager.exception.InvalidUserException;
 import com.semicolon.africa.passwordManager.service.PasswordManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +36,9 @@ public class PasswordManagerController {
     @PostMapping("/register")
     public RequestEntity<?> createUser(@RequestBody CreateUserRequest request){
         try {
-            return
+            return new RequestEntity<>(passwordManager.createUser(request), HttpStatus.OK);
+        }catch(InvalidUserException e){
+            return new RequestEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }
