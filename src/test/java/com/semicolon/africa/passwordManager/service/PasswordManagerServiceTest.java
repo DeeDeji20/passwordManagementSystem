@@ -5,8 +5,10 @@ import com.semicolon.africa.passwordManager.data.repository.PasswordManagerRepos
 import com.semicolon.africa.passwordManager.dto.request.AddPasswordRequest;
 import com.semicolon.africa.passwordManager.dto.request.CreateUserRequest;
 import com.semicolon.africa.passwordManager.dto.request.RetrievePasswordRequest;
+import com.semicolon.africa.passwordManager.dto.request.UserLoginRequest;
 import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
 import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
+import com.semicolon.africa.passwordManager.dto.response.UserLoginResponse;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
 import com.semicolon.africa.passwordManager.exception.NonExistentUrlexception;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +16,9 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -53,6 +53,19 @@ class PasswordManagerServiceTest {
         userRequest.setPassword("adeola");
         log.info("in 12 char-->");
         assertThrows(InvalidPasswordException.class ,()-> service.createUser(userRequest));
+    }
+
+    @Test
+    void testThatRegisteredUserCanLogin(){
+        CreateUserRequest request = new CreateUserRequest();
+        request.setEmail("increase@gmail.com");
+        request.setPassword("incBabe@5000");
+        service.createUser(request);
+        assertThat(service.getAllUsers().size() , is(1));
+
+        UserLoginRequest userLogin = new UserLoginRequest("increase@gmail.com", "incBabe@5000");
+         UserLoginResponse response= service.loginUser(userLogin);
+         assertThat(response.getMessage(), is(request.getEmail()+" has been logged in"));
     }
 
     @Test
@@ -102,6 +115,7 @@ class PasswordManagerServiceTest {
     }
 
     @Test
+    @Order(5)
     void testThatUserNameAndPasswordCanBeRetrievedWhenUrlIsSearchedFor(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("lotachi@gmail.com");
@@ -125,6 +139,7 @@ class PasswordManagerServiceTest {
     }
 
     @Test
+    @Order(6)
     void testThatUserNameAndPasswordThatDoesntExists_throwsException(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("esther@gmail.com");
@@ -141,8 +156,6 @@ class PasswordManagerServiceTest {
         RetrievePasswordRequest request = new RetrievePasswordRequest();
         request.setEmail("esther@gmail.com");
         request.setUrl("www.nonExistentSite.org");
-//        service.retrieve(request);
-//        RetrievePasswordResponse response = service.retrieve(request);
         assertThrows(NonExistentUrlexception.class, ()-> service.retrieve(request));
     }
 }

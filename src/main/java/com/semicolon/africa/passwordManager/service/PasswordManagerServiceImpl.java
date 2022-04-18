@@ -2,14 +2,13 @@ package com.semicolon.africa.passwordManager.service;
 
 import com.semicolon.africa.passwordManager.data.model.User;
 import com.semicolon.africa.passwordManager.data.repository.PasswordManagerRepository;
-import com.semicolon.africa.passwordManager.dto.request.AddPasswordRequest;
-import com.semicolon.africa.passwordManager.dto.request.CreateUserRequest;
-import com.semicolon.africa.passwordManager.dto.request.PasswordToRegister;
-import com.semicolon.africa.passwordManager.dto.request.RetrievePasswordRequest;
+import com.semicolon.africa.passwordManager.dto.request.*;
 import com.semicolon.africa.passwordManager.dto.response.AddPasswordResponse;
 import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
 import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
+import com.semicolon.africa.passwordManager.dto.response.UserLoginResponse;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
+import com.semicolon.africa.passwordManager.exception.NonExistentUrlexception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,6 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     @Autowired
     PasswordManagerRepository database;
 
-//    @Autowired
-//   User user = new User();
 
     @Override
     public CreateUserResponse createUser(CreateUserRequest request) {
@@ -92,38 +89,18 @@ public class PasswordManagerServiceImpl implements PasswordManager{
                 response.setPassword(password.getPassword());
                 response.setUserName(password.getUserName());
             }
+            else throw new NonExistentUrlexception("Non-existent url");
         });
         return response;
     }
+
+    @Override
+    public UserLoginResponse loginUser(UserLoginRequest userLogin) {
+        User user = database.findByEmail(userLogin.getEmail());
+        UserLoginResponse response = new UserLoginResponse();
+        if(userLogin.getPassword().equals(user.getRegistrationPassword())){
+            response.setMessage(user.getEmail() + " has been logged in");
+        }
+        return response;
+    }
 }
-
-
-
-
-//
-//
-//    User user = new User();
-////        ListIterator<User> iterator = getAllUsers().listIterator();
-//        user = database.findByEmail(email);
-//                List<User> users = database.findAll();
-//
-////        System.out.println(user);
-//        PasswordToRegister passwordToRegister = new PasswordToRegister();
-//        passwordToRegister.setPassword(request.getPassword());
-//        passwordToRegister.setUrl(request.getUrl());
-//        passwordToRegister.setUserName(request.getUserName());
-//        passwordToRegister.setName(request.getName());
-//        users.forEach(userx ->{
-//        if(Objects.equals(userx.getEmail(), email)){
-//        log.info(" ............");
-//        database.deleteUserByEmail(userx.getEmail());
-//        }
-//        });
-//        user.getRegisteredPassword().add(passwordToRegister);
-//        log.info(String.valueOf(user));
-//        database.save(user);
-//
-////        System.out.println(user);
-//        log.info(String.valueOf(database.findAll()));
-////        ListIterator <User> listIterator = database.findAll().listIterator();
-////        while(listIterator.hasNext()) System.out.println(listIterator.next());
