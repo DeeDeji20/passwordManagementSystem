@@ -10,12 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+//@Controller
+@RequestMapping("/passwordManager")
+@RestController
 public class PasswordManagerController {
     @Autowired
     PasswordManager passwordManager;
@@ -26,12 +25,12 @@ public class PasswordManagerController {
         return "home";
     }
 
-    @PostMapping("/register")
-    public String register(@ModelAttribute CreateUserRequest request, Model model){
-        CreateUserResponse response = passwordManager.createUser(request);
-        model.addAttribute("response", response);
-        return "result";
-    }
+//    @PostMapping("/register")
+//    public String register(@ModelAttribute CreateUserRequest request, Model model){
+//        CreateUserResponse response = passwordManager.createUser(request);
+//        model.addAttribute("response", response);
+//        return "result";
+//    }
 
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody CreateUserRequest request){
