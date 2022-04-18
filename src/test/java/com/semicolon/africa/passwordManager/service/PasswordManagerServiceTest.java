@@ -10,6 +10,7 @@ import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
 import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
 import com.semicolon.africa.passwordManager.dto.response.UserLoginResponse;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
+import com.semicolon.africa.passwordManager.exception.InvalidUserException;
 import com.semicolon.africa.passwordManager.exception.NonExistentUrlexception;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -66,6 +67,25 @@ class PasswordManagerServiceTest {
         UserLoginRequest userLogin = new UserLoginRequest("increase@gmail.com", "incBabe@5000");
          UserLoginResponse response= service.loginUser(userLogin);
          assertThat(response.getMessage(), is(request.getEmail()+" has been logged in"));
+    }
+
+    @Test
+    void testThatOnlyLoggedInUsersCanAddPassword(){
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setEmail("dolaoladeji@gmail.com");
+        userRequest.setPassword("ade!ola@8b9-0V");
+        service.createUser(userRequest);
+
+        AddPasswordRequest request = new AddPasswordRequest();
+        request.setPassword("1234567");
+        request.setName("dee");
+        request.setUrl("www.herokuapp.org");
+        request.setUserName("Deesnow200");
+
+//        service.addPassword(userRequest.getEmail(), request);
+
+       assertThrows(InvalidUserException.class, ()-> service.addPassword("unknownEmail@gmail.com", request));
+
     }
 
     @Test
@@ -157,5 +177,10 @@ class PasswordManagerServiceTest {
         request.setEmail("esther@gmail.com");
         request.setUrl("www.nonExistentSite.org");
         assertThrows(NonExistentUrlexception.class, ()-> service.retrieve(request));
+    }
+
+    @AfterEach
+    void tearDown(){
+        repository.deleteAll();
     }
 }

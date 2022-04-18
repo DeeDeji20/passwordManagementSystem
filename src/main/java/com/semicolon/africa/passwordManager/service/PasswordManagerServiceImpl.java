@@ -8,6 +8,7 @@ import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
 import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
 import com.semicolon.africa.passwordManager.dto.response.UserLoginResponse;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
+import com.semicolon.africa.passwordManager.exception.InvalidUserException;
 import com.semicolon.africa.passwordManager.exception.NonExistentUrlexception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ public class PasswordManagerServiceImpl implements PasswordManager{
 
     @Override
     public AddPasswordResponse addPassword(String email, AddPasswordRequest request) {
+        if (database.findByEmail(email) == null) throw new InvalidUserException("Not a valid user");
         PasswordToRegister passwordToRegister = new PasswordToRegister();
         passwordToRegister.setName(request.getName());
         passwordToRegister.setPassword(request.getPassword());
