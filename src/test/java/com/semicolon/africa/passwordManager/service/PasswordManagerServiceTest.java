@@ -6,6 +6,7 @@ import com.semicolon.africa.passwordManager.dto.request.AddPasswordRequest;
 import com.semicolon.africa.passwordManager.dto.request.CreateUserRequest;
 import com.semicolon.africa.passwordManager.dto.request.RetrievePasswordRequest;
 import com.semicolon.africa.passwordManager.dto.request.UserLoginRequest;
+import com.semicolon.africa.passwordManager.dto.response.AddPasswordResponse;
 import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
 import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
 import com.semicolon.africa.passwordManager.dto.response.UserLoginResponse;
@@ -70,7 +71,7 @@ class PasswordManagerServiceTest {
     }
 
     @Test
-    void testThatOnlyLoggedInUsersCanAddPassword(){
+    void testThatInvalidUsersCannotAddPasswords_throwsException(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("dolaoladeji@gmail.com");
         userRequest.setPassword("ade!ola@8b9-0V");
@@ -81,8 +82,6 @@ class PasswordManagerServiceTest {
         request.setName("dee");
         request.setUrl("www.herokuapp.org");
         request.setUserName("Deesnow200");
-
-//        service.addPassword(userRequest.getEmail(), request);
 
        assertThrows(InvalidUserException.class, ()-> service.addPassword("unknownEmail@gmail.com", request));
 
@@ -132,6 +131,22 @@ class PasswordManagerServiceTest {
         service.addPassword(userRequest.getEmail(), request2);
 
         assertThat(service.getListOfUserPassword(userRequest.getEmail()).size(),is(2));
+    }
+
+    @Test
+    void testThatAddPasswordResponseCanBeGotten(){
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setEmail("doleoladeji@gmail.com");
+        userRequest.setPassword("ade!ola@8b9-0V");
+        service.createUser(userRequest);
+
+        AddPasswordRequest request = new AddPasswordRequest();
+        request.setPassword("1234567");
+        request.setName("dee");
+        request.setUrl("www.herokuapp.org");
+        request.setUserName("mysnow200");
+        AddPasswordResponse response = service.addPassword(userRequest.getEmail(), request);
+        assertThat(response.getMessage(), is("password to " + request.getUrl() + " has been added"));
     }
 
     @Test
