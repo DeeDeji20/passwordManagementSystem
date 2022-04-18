@@ -56,16 +56,13 @@ public class PasswordManagerServiceImpl implements PasswordManager{
         passwordToRegister.setPassword(request.getPassword());
         passwordToRegister.setUrl(request.getUrl());
         passwordToRegister.setUserName(request.getUserName());
-
         User user = database.findByEmail(email);
         user.getRegisteredPassword().add(passwordToRegister);
-        log.info("users in db-->{}", database.findAll());
         database.save(user);
-        log.info("users in db after-->{}", database.findAll());
 
-
-        log.info(String.valueOf(user.getRegisteredPassword().size()));
-        return null;
+        AddPasswordResponse response = new AddPasswordResponse();
+        response.setMessage("password to " + request.getUrl() + " has been added");
+        return response;
     }
 
     @Override

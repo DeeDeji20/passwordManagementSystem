@@ -1,6 +1,5 @@
 package com.semicolon.africa.passwordManager.service;
 
-import com.semicolon.africa.passwordManager.data.model.User;
 import com.semicolon.africa.passwordManager.data.repository.PasswordManagerRepository;
 import com.semicolon.africa.passwordManager.dto.request.AddPasswordRequest;
 import com.semicolon.africa.passwordManager.dto.request.CreateUserRequest;

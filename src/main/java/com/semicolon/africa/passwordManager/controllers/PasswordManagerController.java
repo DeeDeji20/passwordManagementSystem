@@ -4,16 +4,20 @@ import com.semicolon.africa.passwordManager.dto.request.CreateUserRequest;
 import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
 import com.semicolon.africa.passwordManager.service.PasswordManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class PasswordManagerController {
     @Autowired
     PasswordManager passwordManager;
+
+
     @GetMapping
     public String home(){
         return "home";
@@ -24,5 +28,12 @@ public class PasswordManagerController {
         CreateUserResponse response = passwordManager.createUser(request);
         model.addAttribute("response", response);
         return "result";
+    }
+
+    @PostMapping("/register")
+    public RequestEntity<?> createUser(@RequestBody CreateUserRequest request){
+        try {
+            return
+        }
     }
 }
