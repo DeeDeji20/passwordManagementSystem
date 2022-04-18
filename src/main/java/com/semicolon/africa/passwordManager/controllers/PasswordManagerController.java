@@ -7,7 +7,7 @@ import com.semicolon.africa.passwordManager.exception.InvalidUserException;
 import com.semicolon.africa.passwordManager.service.PasswordManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,11 +34,11 @@ public class PasswordManagerController {
     }
 
     @PostMapping("/register")
-    public RequestEntity<?> createUser(@RequestBody CreateUserRequest request){
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest request){
         try {
-            return new RequestEntity<>(passwordManager.createUser(request), HttpStatus.OK);
+            return new ResponseEntity<>(passwordManager.createUser(request), HttpStatus.OK);
         }catch(InvalidUserException e){
-            return new RequestEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }
