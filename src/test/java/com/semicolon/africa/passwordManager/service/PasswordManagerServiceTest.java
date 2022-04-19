@@ -81,8 +81,9 @@ class PasswordManagerServiceTest {
         request.setName("dee");
         request.setUrl("www.herokuapp.org");
         request.setUserName("Deesnow200");
+        request.setEmail("unknownEmail@gmail.com");
 
-       assertThrows(InvalidUserException.class, ()-> service.addPassword("unknownEmail@gmail.com", request));
+       assertThrows(InvalidUserException.class, ()-> service.addPassword( request));
 
     }
 
@@ -99,8 +100,9 @@ class PasswordManagerServiceTest {
         request.setName("dee");
         request.setUrl("www.herokuapp.org");
         request.setUserName("Deesnow200");
+        request.setEmail(userRequest.getEmail());
 
-        service.addPassword(userRequest.getEmail(), request);
+        service.addPassword(request);
 
         assertThat(service.getListOfUserPassword(userRequest.getEmail()).size(),is(1));
 
@@ -119,15 +121,17 @@ class PasswordManagerServiceTest {
         request.setName("dee");
         request.setUrl("www.herokuapp.org");
         request.setUserName("mysnow200");
-        service.addPassword(userRequest.getEmail(), request);
+        request.setEmail("doleoladeji@gmail.com");
+        service.addPassword( request);
 
         AddPasswordRequest request2 = new AddPasswordRequest();
         request2.setPassword("mySecondUrl");
         request2.setName("deeDeji200");
         request2.setUrl("www.google.org");
         request2.setUserName("DeeDeji");
+        request2.setEmail("doleoladeji@gmail.com");
 
-        service.addPassword(userRequest.getEmail(), request2);
+        service.addPassword(request2);
 
         assertThat(service.getListOfUserPassword(userRequest.getEmail()).size(),is(2));
     }
@@ -144,7 +148,8 @@ class PasswordManagerServiceTest {
         request.setName("dee");
         request.setUrl("www.herokuapp.org");
         request.setUserName("mysnow200");
-        AddPasswordResponse response = service.addPassword(userRequest.getEmail(), request);
+        request.setEmail(userRequest.getEmail());
+        AddPasswordResponse response = service.addPassword(request);
         assertThat(response.getMessage(), is("password to " + request.getUrl() + " has been added"));
     }
 
@@ -161,7 +166,8 @@ class PasswordManagerServiceTest {
         addRequest.setName("youtube");
         addRequest.setUrl("www.youtube.org");
         addRequest.setUserName("myYoutubeUserName");
-        service.addPassword(userRequest.getEmail(), addRequest);
+        addRequest.setEmail(userRequest.getEmail());
+        service.addPassword(addRequest);
 
         RetrievePasswordRequest request = new RetrievePasswordRequest();
         request.setEmail("lotachi@gmail.com");
@@ -185,7 +191,8 @@ class PasswordManagerServiceTest {
         addRequest.setName("customSite");
         addRequest.setUrl("www.myCustomSite.org");
         addRequest.setUserName("customSite");
-        service.addPassword(userRequest.getEmail(), addRequest);
+        addRequest.setEmail(userRequest.getEmail());
+        service.addPassword(addRequest);
 
         RetrievePasswordRequest request = new RetrievePasswordRequest();
         request.setEmail("esther@gmail.com");

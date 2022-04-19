@@ -49,14 +49,15 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     }
 
     @Override
-    public AddPasswordResponse addPassword(String email, AddPasswordRequest request) {
-        if (database.findByEmail(email) == null) throw new InvalidUserException("Not a valid user");
+    public AddPasswordResponse addPassword(AddPasswordRequest request) {
+        if (database.findByEmail(request.getEmail()) == null) throw new InvalidUserException("Not a valid user");
         PasswordToRegister passwordToRegister = new PasswordToRegister();
         passwordToRegister.setName(request.getName());
         passwordToRegister.setPassword(request.getPassword());
         passwordToRegister.setUrl(request.getUrl());
         passwordToRegister.setUserName(request.getUserName());
-        User user = database.findByEmail(email);
+        User user = database.findByEmail(request.getEmail());
+
         user.getRegisteredPassword().add(passwordToRegister);
         database.save(user);
 

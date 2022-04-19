@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface PasswordManager {
     CreateUserResponse createUser(CreateUserRequest request);
-    AddPasswordResponse addPassword(String userName, AddPasswordRequest request);
+    AddPasswordResponse addPassword(AddPasswordRequest request);
 
     List<User> getAllUsers();
 

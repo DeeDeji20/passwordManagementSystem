@@ -9,4 +9,5 @@ public class AddPasswordRequest {
     private String userName;
     private String url;
     private String password;
+    private String email;
 }
