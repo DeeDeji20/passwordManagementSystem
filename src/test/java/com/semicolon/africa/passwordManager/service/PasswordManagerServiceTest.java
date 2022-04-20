@@ -200,6 +200,32 @@ class PasswordManagerServiceTest {
         assertThrows(NonExistentUrlexception.class, ()-> service.retrieve(request));
     }
 
+    @Test
+    void testThatAPasswordCanBeDeletedFromListsOfPasswords(){
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setEmail("mercy@gmail.com");
+        userRequest.setPassword("mercygirl@!90A");
+        service.createUser(userRequest);
+
+        AddPasswordRequest addRequest = new AddPasswordRequest();
+        addRequest.setPassword("myDeeDeji");
+        addRequest.setName("customSite");
+        addRequest.setUrl("www.myCustomSite.org");
+        addRequest.setUserName("customSite");
+        addRequest.setEmail(userRequest.getEmail());
+        service.addPassword(addRequest);
+
+        AddPasswordRequest addRequest2 = new AddPasswordRequest();
+        addRequest2.setPassword("randomPassword");
+        addRequest2.setName("dellwebsite");
+        addRequest2.setUrl("www.dell.org");
+        addRequest2.setUserName("cell");
+        addRequest2.setEmail(userRequest.getEmail());
+        service.addPassword(addRequest2);
+
+        service.delete(1);
+    }
+
     @AfterEach
     void tearDown(){
         repository.deleteAll();

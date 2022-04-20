@@ -20,4 +20,6 @@ public interface PasswordManager {
     RetrievePasswordResponse retrieve(RetrievePasswordRequest request);
 
     UserLoginResponse loginUser(UserLoginRequest userLogin);
+
+    void delete(int passwordId);
 }
