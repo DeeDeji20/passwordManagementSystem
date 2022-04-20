@@ -224,7 +224,7 @@ class PasswordManagerServiceTest {
         service.addPassword(addRequest2);
 
         service.delete(1, userRequest.getEmail());
-        assertThat(service.getListOfUserPassword(userRequest.getEmail()), is(1));
+        assertThat(service.getListOfUserPassword(userRequest.getEmail()).size(), is(1));
     }
 
     @AfterEach

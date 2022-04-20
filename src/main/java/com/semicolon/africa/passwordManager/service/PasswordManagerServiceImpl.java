@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ListIterator;
 
 
 @Service
@@ -109,9 +110,9 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     public void delete(int passwordId, String email) {
         List<PasswordToRegister> passwords =getListOfUserPassword(email);
         PasswordToRegister foundPassword = passwords.get(passwordId);
-        passwords.forEach(password ->{
-            if(password.getId() == passwordId) passwords.remove(foundPassword);
-
-        });
+        ListIterator<PasswordToRegister> iterator = passwords.listIterator();
+        while(iterator.hasNext()){
+            if(iterator.next().getId() == passwordId) iterator.remove();
+        }
     }
 }
