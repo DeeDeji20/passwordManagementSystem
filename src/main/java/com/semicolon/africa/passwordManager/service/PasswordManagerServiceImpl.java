@@ -110,9 +110,8 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     public void delete(int passwordId, String email) {
         List<PasswordToRegister> passwords =getListOfUserPassword(email);
         PasswordToRegister foundPassword = passwords.get(passwordId);
-        ListIterator<PasswordToRegister> iterator = passwords.listIterator();
-        while(iterator.hasNext()){
-            if(iterator.next().getId() == passwordId) iterator.remove();
+        for (PasswordToRegister password : passwords) {
+            if (password.getId() == passwordId) passwords.remove(foundPassword);
         }
     }
 }
