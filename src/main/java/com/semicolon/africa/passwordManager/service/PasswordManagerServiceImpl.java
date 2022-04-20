@@ -52,6 +52,7 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     public AddPasswordResponse addPassword(AddPasswordRequest request) {
         if (database.findByEmail(request.getEmail()) == null) throw new InvalidUserException("Not a valid user");
         PasswordToRegister passwordToRegister = new PasswordToRegister();
+        passwordToRegister.setId(getListOfUserPassword(request.getEmail()).size()+1);
         passwordToRegister.setName(request.getName());
         passwordToRegister.setPassword(request.getPassword());
         passwordToRegister.setUrl(request.getUrl());
@@ -102,5 +103,15 @@ public class PasswordManagerServiceImpl implements PasswordManager{
             response.setMessage(user.getEmail() + " has been logged in");
         }
         return response;
+    }
+
+    @Override
+    public void delete(int passwordId, String email) {
+        List<PasswordToRegister> passwords =getListOfUserPassword(email);
+        PasswordToRegister foundPassword = passwords.get(passwordId);
+        passwords.forEach(password ->{
+            if(password.getId() == passwordId) passwords.remove(foundPassword);
+
+        });
     }
 }

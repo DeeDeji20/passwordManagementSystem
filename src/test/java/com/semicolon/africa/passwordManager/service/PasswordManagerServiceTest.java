@@ -223,7 +223,8 @@ class PasswordManagerServiceTest {
         addRequest2.setEmail(userRequest.getEmail());
         service.addPassword(addRequest2);
 
-        service.delete(1);
+        service.delete(1, userRequest.getEmail());
+        assertThat(service.getListOfUserPassword(userRequest.getEmail()), is(1));
     }
 
     @AfterEach
