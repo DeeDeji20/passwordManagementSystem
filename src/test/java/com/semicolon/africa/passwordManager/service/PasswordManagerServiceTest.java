@@ -223,7 +223,7 @@ class PasswordManagerServiceTest {
         addRequest2.setEmail(userRequest.getEmail());
         service.addPassword(addRequest2);
 
-        service.delete("dellwebsite", userRequest.getEmail());
+        service.delete(1, userRequest.getEmail());
 
      assertThat(service.getListOfUserPassword(userRequest.getEmail()).size(), is(1));
 

@@ -108,14 +108,13 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     }
 
     @Override
-    public void delete(String passwordId, String email) {
+    public void delete(int passwordId, String email) {
         User user = database.findByEmail(email);
         List<PasswordToRegister> passwords = user.getRegisteredPassword();
         for (PasswordToRegister password : passwords) {
-            if (Objects.equals(password.getName(), passwordId)){
+            if (Objects.equals(password.getId(), passwordId)){
                 passwords.remove(password);
                 database.save(user);
-                System.out.println("===>"+passwords.stream().count());
                 System.out.println(passwords);
                 break;
             }

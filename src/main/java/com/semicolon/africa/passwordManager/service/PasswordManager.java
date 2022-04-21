@@ -21,5 +21,5 @@ public interface PasswordManager {
 
     UserLoginResponse loginUser(UserLoginRequest userLogin);
 
-    void delete(String passwordId, String email);
+    void delete(int passwordId, String email);
 }
