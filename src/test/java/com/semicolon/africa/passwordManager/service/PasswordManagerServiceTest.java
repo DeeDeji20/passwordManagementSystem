@@ -231,7 +231,21 @@ class PasswordManagerServiceTest {
 
     @Test
     void testThatPasswordCanBeUpdated(){
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setEmail("mercy@gmail.com");
+        userRequest.setPassword("mercygirl@!90A");
+        service.createUser(userRequest);
 
+        AddPasswordRequest addRequest = new AddPasswordRequest();
+        addRequest.setPassword("myDeeDeji");
+        addRequest.setName("customSite");
+        addRequest.setUrl("www.myCustomSite.org");
+        addRequest.setUserName("customSite");
+        addRequest.setEmail(userRequest.getEmail());
+        service.addPassword(addRequest);
+
+
+        service.update();
     }
 
     @AfterEach
