@@ -199,7 +199,7 @@ class PasswordManagerServiceTest {
         request.setUrl("www.nonExistentSite.org");
         assertThrows(NonExistentUrlexception.class, ()-> service.retrieve(request));
     }
-
+//    @Order(7)
     @Test
     void testThatAPasswordCanBeDeletedFromListsOfPasswords(){
         CreateUserRequest userRequest = new CreateUserRequest();
@@ -223,7 +223,7 @@ class PasswordManagerServiceTest {
         addRequest2.setEmail(userRequest.getEmail());
         service.addPassword(addRequest2);
 
-        service.delete(1, userRequest.getEmail());
+        service.delete("dellwebsite", userRequest.getEmail());
         assertThat(service.getListOfUserPassword(userRequest.getEmail()).size(), is(1));
     }
 

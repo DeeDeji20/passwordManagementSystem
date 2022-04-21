@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 
 
 @Service
@@ -107,11 +108,16 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     }
 
     @Override
-    public void delete(int passwordId, String email) {
+    public void delete(String passwordId, String email) {
         List<PasswordToRegister> passwords =getListOfUserPassword(email);
-        PasswordToRegister foundPassword = passwords.get(passwordId);
+//        PasswordToRegister foundPassword = passwords.get(passwordId);
         for (PasswordToRegister password : passwords) {
-            if (password.getId() == passwordId) passwords.remove(foundPassword);
+            if (Objects.equals(password.getName(), passwordId)){
+                passwords.remove(password);
+                System.out.println(passwords);
+
+                break;
+            }
         }
     }
 }
