@@ -224,7 +224,14 @@ class PasswordManagerServiceTest {
         service.addPassword(addRequest2);
 
         service.delete("dellwebsite", userRequest.getEmail());
-        assertThat(service.getListOfUserPassword(userRequest.getEmail()).size(), is(1));
+
+     assertThat(service.getListOfUserPassword(userRequest.getEmail()).size(), is(1));
+
+    }
+
+    @Test
+    void testThatPasswordCanBeUpdated(){
+
     }
 
     @AfterEach

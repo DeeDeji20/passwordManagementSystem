@@ -10,5 +10,4 @@ public class PasswordToRegister {
     private String url;
     private String password;
 
-
 }

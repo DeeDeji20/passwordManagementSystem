@@ -92,7 +92,7 @@ public class PasswordManagerServiceImpl implements PasswordManager{
                 response.setPassword(password.getPassword());
                 response.setUserName(password.getUserName());
             }
-            else throw new NonExistentUrlexception("Non-existent url");
+            else throw new NonExistentUrlexception("Non-existent url password");
         });
         return response;
     }
@@ -109,15 +109,19 @@ public class PasswordManagerServiceImpl implements PasswordManager{
 
     @Override
     public void delete(String passwordId, String email) {
-        List<PasswordToRegister> passwords =getListOfUserPassword(email);
-//        PasswordToRegister foundPassword = passwords.get(passwordId);
+        User user = database.findByEmail(email);
+        log.info(String.valueOf(user.getRegisteredPassword().size()));
+//        return user.getRegisteredPassword();
+        List<PasswordToRegister> passwords = user.getRegisteredPassword();
         for (PasswordToRegister password : passwords) {
             if (Objects.equals(password.getName(), passwordId)){
                 passwords.remove(password);
+                database.save(user);
+                System.out.println("===>"+passwords.stream().count());
                 System.out.println(passwords);
-
                 break;
             }
         }
+
     }
 }
