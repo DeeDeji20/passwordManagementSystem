@@ -93,6 +93,9 @@ class PasswordManagerServiceTest {
         userRequest.setPassword("ade!ola@8b9-0V");
         service.createUser(userRequest);
 
+        UserLoginRequest userLogin = new UserLoginRequest("dolaoladeji@gmail.com", "ade!ola@8b9-0V");
+        UserLoginResponse response= service.loginUser(userLogin);
+
         AddPasswordRequest request = new AddPasswordRequest();
         request.setPassword("1234567");
         request.setName("dee");

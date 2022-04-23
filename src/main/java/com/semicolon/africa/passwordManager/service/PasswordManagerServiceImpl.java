@@ -10,6 +10,7 @@ import com.semicolon.africa.passwordManager.dto.response.UserLoginResponse;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
 import com.semicolon.africa.passwordManager.exception.InvalidUserException;
 import com.semicolon.africa.passwordManager.exception.NonExistentUrlexception;
+import com.semicolon.africa.passwordManager.exception.UserNotLoggedInException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+
 
 
 @Service
@@ -52,14 +54,17 @@ public class PasswordManagerServiceImpl implements PasswordManager{
 
     @Override
     public AddPasswordResponse addPassword(AddPasswordRequest request) {
+        User user = database.findByEmail(request.getEmail());
         if (database.findByEmail(request.getEmail()) == null) throw new InvalidUserException("Not a valid user");
+        System.out.println(user.isLoginStatus()+ "===>");
+        if (!user.isLoginStatus()) throw new UserNotLoggedInException("User not logged in");
         PasswordToRegister passwordToRegister = new PasswordToRegister();
         passwordToRegister.setId(getListOfUserPassword(request.getEmail()).size()+1);
         passwordToRegister.setName(request.getName());
         passwordToRegister.setPassword(request.getPassword());
         passwordToRegister.setUrl(request.getUrl());
         passwordToRegister.setUserName(request.getUserName());
-        User user = database.findByEmail(request.getEmail());
+
         user.getRegisteredPassword().add(passwordToRegister);
         database.save(user);
 
@@ -101,7 +106,10 @@ public class PasswordManagerServiceImpl implements PasswordManager{
         User user = database.findByEmail(userLogin.getEmail());
         UserLoginResponse response = new UserLoginResponse();
         if(userLogin.getPassword().equals(user.getRegistrationPassword())){
+            user.setLoginStatus(true);
             response.setMessage(user.getEmail() + " has been logged in");
+            System.out.println(user.isLoginStatus());
+            database.save(user);
         }
         return response;
     }
@@ -114,14 +122,6 @@ public class PasswordManagerServiceImpl implements PasswordManager{
             passwords.remove(passwords.get(passwordId));
             database.save(user);
         }
-//        for (PasswordToRegister password : passwords) {
-//            if (Objects.equals(password.getId(), passwordId)){
-//                passwords.remove(password);
-//                database.save(user);
-//                System.out.println(passwords);
-//                break;
-//            }
-//        }
 
     }
 }
