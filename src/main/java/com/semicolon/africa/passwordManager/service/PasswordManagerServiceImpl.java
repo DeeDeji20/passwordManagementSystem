@@ -60,7 +60,6 @@ public class PasswordManagerServiceImpl implements PasswordManager{
         passwordToRegister.setUrl(request.getUrl());
         passwordToRegister.setUserName(request.getUserName());
         User user = database.findByEmail(request.getEmail());
-
         user.getRegisteredPassword().add(passwordToRegister);
         database.save(user);
 
@@ -111,14 +110,18 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     public void delete(int passwordId, String email) {
         User user = database.findByEmail(email);
         List<PasswordToRegister> passwords = user.getRegisteredPassword();
-        for (PasswordToRegister password : passwords) {
-            if (Objects.equals(password.getId(), passwordId)){
-                passwords.remove(password);
-                database.save(user);
-                System.out.println(passwords);
-                break;
-            }
+        if(passwords.contains(passwords.get(passwordId))){
+            passwords.remove(passwords.get(passwordId));
+            database.save(user);
         }
+//        for (PasswordToRegister password : passwords) {
+//            if (Objects.equals(password.getId(), passwordId)){
+//                passwords.remove(password);
+//                database.save(user);
+//                System.out.println(passwords);
+//                break;
+//            }
+//        }
 
     }
 }

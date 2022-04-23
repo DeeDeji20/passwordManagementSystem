@@ -25,5 +25,6 @@ public class User {
     private String email;
     @NonNull
     private String registrationPassword;
+    private boolean loginStatus;
     private List<PasswordToRegister> registeredPassword = new ArrayList<>();
 }

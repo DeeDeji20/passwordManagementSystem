@@ -1,10 +1,7 @@
 package com.semicolon.africa.passwordManager.service;
 
 import com.semicolon.africa.passwordManager.data.repository.PasswordManagerRepository;
-import com.semicolon.africa.passwordManager.dto.request.AddPasswordRequest;
-import com.semicolon.africa.passwordManager.dto.request.CreateUserRequest;
-import com.semicolon.africa.passwordManager.dto.request.RetrievePasswordRequest;
-import com.semicolon.africa.passwordManager.dto.request.UserLoginRequest;
+import com.semicolon.africa.passwordManager.dto.request.*;
 import com.semicolon.africa.passwordManager.dto.response.AddPasswordResponse;
 import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
 import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
@@ -230,6 +227,11 @@ class PasswordManagerServiceTest {
     }
 
     @Test
+    void testThatOnlyLoggedInUserCanAddPaasword(){
+
+    }
+
+    @Test
     void testThatPasswordCanBeUpdated(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("mercy@gmail.com");
@@ -244,8 +246,9 @@ class PasswordManagerServiceTest {
         addRequest.setEmail(userRequest.getEmail());
         service.addPassword(addRequest);
 
-
-        service.update();
+        UpdatePasswordRequest updateRequest = new UpdatePasswordRequest();
+//        updateRequest
+//        service.update(updateRequest);
     }
 
     @AfterEach
