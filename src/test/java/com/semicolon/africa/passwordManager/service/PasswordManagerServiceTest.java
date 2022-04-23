@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PasswordManagerServiceTest {
     @Autowired
     PasswordManager service;
@@ -32,7 +32,6 @@ class PasswordManagerServiceTest {
     PasswordManagerRepository repository;
 
     @Test
-    @Order(1)
     void testThatAUserCanBeCreated(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("deolaoladeji@gmail.com");
@@ -45,7 +44,6 @@ class PasswordManagerServiceTest {
 
 
     @Test
-    @Order(2)
     void testThatIfPasswordBeLessThan12Characters_throwsException(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("deolaoladeji@gmail.com");
@@ -86,7 +84,6 @@ class PasswordManagerServiceTest {
     }
 
     @Test
-    @Order(3)
     void testThatPasswordCanBeAddedToTheListOfPasswords(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("dolaoladeji@gmail.com");
@@ -110,7 +107,6 @@ class PasswordManagerServiceTest {
     }
 
     @Test
-    @Order(4)
     void testThatAnotherPasswordCanBeAddedToTheListOfPasswords(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("doleoladeji@gmail.com");
@@ -161,7 +157,6 @@ class PasswordManagerServiceTest {
     }
 
     @Test
-    @Order(5)
     void testThatUserNameAndPasswordCanBeRetrievedWhenUrlIsSearchedFor(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("lotachi@gmail.com");
@@ -189,7 +184,6 @@ class PasswordManagerServiceTest {
     }
 
     @Test
-    @Order(6)
     void testThatUserNameAndPasswordThatDoesntExists_throwsException(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("esther@gmail.com");
@@ -212,7 +206,6 @@ class PasswordManagerServiceTest {
         request.setUrl("www.nonExistentSite.org");
         assertThrows(NonExistentUrlexception.class, ()-> service.retrieve(request));
     }
-//    @Order(7)
     @Test
     void testThatAPasswordCanBeDeletedFromListsOfPasswords(){
         CreateUserRequest userRequest = new CreateUserRequest();
@@ -280,8 +273,10 @@ class PasswordManagerServiceTest {
         service.addPassword(addRequest);
 
         UpdatePasswordRequest updateRequest = new UpdatePasswordRequest();
-//        updateRequest
-//        service.update(updateRequest);
+        updateRequest.setName("changedName");
+        updateRequest.setPassword("changedPassword");
+        updateRequest.setUserName("changedUsername");
+        service.update(1, updateRequest);
     }
 
     @AfterEach
