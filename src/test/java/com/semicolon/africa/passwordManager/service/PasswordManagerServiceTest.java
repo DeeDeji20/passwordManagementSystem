@@ -9,6 +9,7 @@ import com.semicolon.africa.passwordManager.dto.response.UserLoginResponse;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
 import com.semicolon.africa.passwordManager.exception.InvalidUserException;
 import com.semicolon.africa.passwordManager.exception.NonExistentUrlexception;
+import com.semicolon.africa.passwordManager.exception.UserNotLoggedInException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -227,7 +228,18 @@ class PasswordManagerServiceTest {
     }
 
     @Test
-    void testThatOnlyLoggedInUserCanAddPaasword(){
+    void testThatOnlyLoggedInUserCanAddPaasword_IfNotThrowsException(){
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setEmail("mercy@gmail.com");
+        userRequest.setPassword("mercygirl@!90A");
+        service.createUser(userRequest);
+        AddPasswordRequest addRequest = new AddPasswordRequest();
+        addRequest.setPassword("myDeeDeji");
+        addRequest.setName("customSite");
+        addRequest.setUrl("www.myCustomSite.org");
+        addRequest.setUserName("customSite");
+        addRequest.setEmail(userRequest.getEmail());
+        assertThrows(UserNotLoggedInException.class, ()-> service.addPassword(addRequest));
 
     }
 
