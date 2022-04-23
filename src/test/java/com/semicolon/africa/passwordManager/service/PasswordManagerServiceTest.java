@@ -244,6 +244,7 @@ class PasswordManagerServiceTest {
         userRequest.setEmail("mercy@gmail.com");
         userRequest.setPassword("mercygirl@!90A");
         service.createUser(userRequest);
+
         AddPasswordRequest addRequest = new AddPasswordRequest();
         addRequest.setPassword("myDeeDeji");
         addRequest.setName("customSite");
@@ -251,7 +252,6 @@ class PasswordManagerServiceTest {
         addRequest.setUserName("customSite");
         addRequest.setEmail(userRequest.getEmail());
         assertThrows(UserNotLoggedInException.class, ()-> service.addPassword(addRequest));
-
     }
 
     @Test
@@ -276,7 +276,17 @@ class PasswordManagerServiceTest {
         updateRequest.setName("changedName");
         updateRequest.setPassword("changedPassword");
         updateRequest.setUserName("changedUsername");
-        service.update(1, updateRequest);
+        updateRequest.setEmail(userRequest.getEmail());
+
+        service.update(0, updateRequest);
+
+        RetrievePasswordRequest request = new RetrievePasswordRequest();
+        request.setEmail("mercy@gmail.com");
+        request.setUrl("www.myCustomSite.org");
+        RetrievePasswordResponse response = service.retrieve(request);
+
+        assertThat(response.getUserName(), is("changedUsername"));
+        assertThat(response.getPassword(), is("changedPassword"));
     }
 
     @AfterEach

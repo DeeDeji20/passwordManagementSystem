@@ -125,6 +125,16 @@ public class PasswordManagerServiceImpl implements PasswordManager{
 
     @Override
     public void update(int passwordId, UpdatePasswordRequest updateRequest) {
+        User user = database.findByEmail(updateRequest.getEmail());
+        System.out.println(user);
 
+        List<PasswordToRegister> passwords =  user.getRegisteredPassword();
+        PasswordToRegister password = passwords.get(passwordId);
+        System.out.println(password);
+        password.setName(updateRequest.getName());
+        password.setPassword(updateRequest.getPassword());
+        password.setUserName(updateRequest.getUserName());
+
+        database.save(user);
     }
 }
