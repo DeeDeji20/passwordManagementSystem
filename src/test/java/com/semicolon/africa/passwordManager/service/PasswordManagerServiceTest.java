@@ -117,6 +117,9 @@ class PasswordManagerServiceTest {
         userRequest.setPassword("ade!ola@8b9-0V");
         service.createUser(userRequest);
 
+        UserLoginRequest userLogin = new UserLoginRequest("doleoladeji@gmail.com", "ade!ola@8b9-0V");
+        UserLoginResponse response= service.loginUser(userLogin);
+
         AddPasswordRequest request = new AddPasswordRequest();
         request.setPassword("1234567");
         request.setName("dee");
@@ -144,6 +147,9 @@ class PasswordManagerServiceTest {
         userRequest.setPassword("ade!ola@8b9-0V");
         service.createUser(userRequest);
 
+        UserLoginRequest userLogin = new UserLoginRequest("doleoladeji@gmail.com", "ade!ola@8b9-0V");
+        service.loginUser(userLogin);
+
         AddPasswordRequest request = new AddPasswordRequest();
         request.setPassword("1234567");
         request.setName("dee");
@@ -161,6 +167,9 @@ class PasswordManagerServiceTest {
         userRequest.setEmail("lotachi@gmail.com");
         userRequest.setPassword("ade!ola@8b9-0V");
         service.createUser(userRequest);
+
+        UserLoginRequest userLogin = new UserLoginRequest("lotachi@gmail.com", "ade!ola@8b9-0V");
+        service.loginUser(userLogin);
 
         AddPasswordRequest addRequest = new AddPasswordRequest();
         addRequest.setPassword("myDeeDeji");
@@ -187,6 +196,9 @@ class PasswordManagerServiceTest {
         userRequest.setPassword("esthergirl@!90A");
         service.createUser(userRequest);
 
+        UserLoginRequest userLogin = new UserLoginRequest("esther@gmail.com", "esthergirl@!90A");
+        service.loginUser(userLogin);
+
         AddPasswordRequest addRequest = new AddPasswordRequest();
         addRequest.setPassword("myDeeDeji");
         addRequest.setName("customSite");
@@ -207,6 +219,9 @@ class PasswordManagerServiceTest {
         userRequest.setEmail("mercy@gmail.com");
         userRequest.setPassword("mercygirl@!90A");
         service.createUser(userRequest);
+
+        UserLoginRequest userLogin = new UserLoginRequest("mercy@gmail.com", "mercygirl@!90A");
+        service.loginUser(userLogin);
 
         AddPasswordRequest addRequest = new AddPasswordRequest();
         addRequest.setPassword("myDeeDeji");
@@ -252,6 +267,9 @@ class PasswordManagerServiceTest {
         userRequest.setEmail("mercy@gmail.com");
         userRequest.setPassword("mercygirl@!90A");
         service.createUser(userRequest);
+
+        UserLoginRequest userLogin = new UserLoginRequest("mercy@gmail.com", "mercygirl@!90A");
+        service.loginUser(userLogin);
 
         AddPasswordRequest addRequest = new AddPasswordRequest();
         addRequest.setPassword("myDeeDeji");
