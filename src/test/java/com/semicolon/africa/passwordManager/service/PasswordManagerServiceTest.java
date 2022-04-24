@@ -62,6 +62,18 @@ class PasswordManagerServiceTest {
     }
 
     @Test
+    void testInvalidLoginDetails_throwsException(){
+        CreateUserRequest request = new CreateUserRequest();
+        request.setEmail("increase@gmail.com");
+        request.setPassword("incBabe@5000");
+        service.createUser(request);
+        assertThat(service.getAllUsers().size() , is(1));
+
+        UserLoginRequest userLogin = new UserLoginRequest("increase@gmail.com", "incBabyyy@5000");
+        assertThrows(InvalidPasswordException.class, ()-> service.loginUser(userLogin));
+    }
+
+    @Test
     void testThatInvalidUsersCannotAddPasswords_throwsException(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("dolaoladeji@gmail.com");
@@ -172,9 +184,9 @@ class PasswordManagerServiceTest {
 
         RetrievePasswordRequest request = new RetrievePasswordRequest();
         request.setEmail("lotachi@gmail.com");
-        request.setUrl("www.youtube.org");
+//        request.setUrl("www.youtube.org");
 //        service.retrieve(request);
-        RetrievePasswordResponse response = service.retrieve(request);
+        RetrievePasswordResponse response = service.retrieve(request, "www.youtube.org");
         assertThat(response.getUserName(), is("myYoutubeUserName"));
         assertThat(response.getPassword(), is("myDeeDeji"));
     }
@@ -199,8 +211,8 @@ class PasswordManagerServiceTest {
 
         RetrievePasswordRequest request = new RetrievePasswordRequest();
         request.setEmail("esther@gmail.com");
-        request.setUrl("www.nonExistentSite.org");
-        assertThrows(NonExistentUrlexception.class, ()-> service.retrieve(request));
+//        request.setUrl("www.nonExistentSite.org");
+        assertThrows(NonExistentUrlexception.class, ()-> service.retrieve(request, "www.nonExistentSite.org"));
     }
     @Test
     void testThatAPasswordCanBeDeletedFromListsOfPasswords(){
@@ -278,8 +290,8 @@ class PasswordManagerServiceTest {
 
         RetrievePasswordRequest request = new RetrievePasswordRequest();
         request.setEmail("mercy@gmail.com");
-        request.setUrl("www.myCustomSite.org");
-        RetrievePasswordResponse response = service.retrieve(request);
+//        request.setUrl("www.myCustomSite.org");
+        RetrievePasswordResponse response = service.retrieve(request, "www.myCustomSite.org");
 
         assertThat(response.getUserName(), is("changedUsername"));
         assertThat(response.getPassword(), is("changedPassword"));
@@ -340,8 +352,8 @@ class PasswordManagerServiceTest {
 
         RetrievePasswordRequest request = new RetrievePasswordRequest();
         request.setEmail("mercy@gmail.com");
-        request.setUrl("www.myCustomSite.org");
-        RetrievePasswordResponse response = service.retrieve(request);
+//        request.setUrl("www.myCustomSite.org");
+        RetrievePasswordResponse response = service.retrieve(request, "www.myCustomSite.org");
 
         assertThat(response.getUserName(), is("customSite"));
         assertThat(response.getPassword(), is("changedPassword"));

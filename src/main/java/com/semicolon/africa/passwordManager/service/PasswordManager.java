@@ -14,7 +14,7 @@ public interface PasswordManager {
 
     List<PasswordToRegister> getListOfUserPassword(String email);
 
-    RetrievePasswordResponse retrieve(RetrievePasswordRequest request);
+    RetrievePasswordResponse retrieve(RetrievePasswordRequest request, String s);
 
     UserLoginResponse loginUser(UserLoginRequest userLogin);
 

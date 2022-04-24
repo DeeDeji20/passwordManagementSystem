@@ -81,13 +81,13 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     }
 
     @Override
-    public RetrievePasswordResponse retrieve(RetrievePasswordRequest request) {
+    public RetrievePasswordResponse retrieve(RetrievePasswordRequest request, String url) {
         User user = database.findByEmail(request.getEmail());
         log.info(user.getEmail());
         List<PasswordToRegister> passwords = getListOfUserPassword(request.getEmail());
         RetrievePasswordResponse response = new RetrievePasswordResponse();
         passwords.forEach(password ->{
-            if(password.getUrl().equals(request.getUrl())){
+            if(password.getUrl().equals(url)){
                 response.setPassword(password.getPassword());
                 response.setUserName(password.getUserName());
             }
@@ -105,7 +105,7 @@ public class PasswordManagerServiceImpl implements PasswordManager{
             response.setMessage(user.getEmail() + " has been logged in");
             System.out.println(user.isLoginStatus());
             database.save(user);
-        }
+        } else throw new InvalidPasswordException("Invalid User");
         return response;
     }
 
