@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
-//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PasswordManagerServiceTest {
     @Autowired
     PasswordManager service;
@@ -278,7 +277,7 @@ class PasswordManagerServiceTest {
         updateRequest.setUserName("changedUsername");
         updateRequest.setEmail(userRequest.getEmail());
 
-        service.update(0, updateRequest);
+        service.update(1, updateRequest);
 
         RetrievePasswordRequest request = new RetrievePasswordRequest();
         request.setEmail("mercy@gmail.com");

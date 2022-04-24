@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import java.util.ListIterator;
 
 
 @Service
@@ -116,24 +116,30 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     public void delete(int passwordId, String email) {
         User user = database.findByEmail(email);
         List<PasswordToRegister> passwords = user.getRegisteredPassword();
-        if(passwords.contains(passwords.get(passwordId))){
-            passwords.remove(passwords.get(passwordId));
-            database.save(user);
-        }
 
+        ListIterator<PasswordToRegister> iterator = passwords.listIterator();
+        while(iterator.hasNext()){
+            if(iterator.next().getId() == passwordId){
+                passwords.remove(iterator.next());
+                break;
+            }
+        }
+        database.save(user);
     }
 
     @Override
     public void update(int passwordId, UpdatePasswordRequest updateRequest) {
         User user = database.findByEmail(updateRequest.getEmail());
-        System.out.println(user);
 
         List<PasswordToRegister> passwords =  user.getRegisteredPassword();
-        PasswordToRegister password = passwords.get(passwordId);
-        System.out.println(password);
-        password.setName(updateRequest.getName());
-        password.setPassword(updateRequest.getPassword());
-        password.setUserName(updateRequest.getUserName());
+        passwords.forEach(password->{
+            if (password.getId() == passwordId){
+                password.setName(updateRequest.getName());
+                password.setPassword(updateRequest.getPassword());
+                password.setUserName(updateRequest.getUserName());
+                log.info(password.getUserName());
+            }
+        });
 
         database.save(user);
     }
