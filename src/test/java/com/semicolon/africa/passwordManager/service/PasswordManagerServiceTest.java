@@ -288,6 +288,41 @@ class PasswordManagerServiceTest {
         assertThat(response.getPassword(), is("changedPassword"));
     }
 
+    @Test
+    void testThatOnlyPasswordCanBeUpdated(){
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setEmail("mercy@gmail.com");
+        userRequest.setPassword("mercygirl@!90A");
+        service.createUser(userRequest);
+
+        UserLoginRequest userLogin = new UserLoginRequest("mercy@gmail.com", "mercygirl@!90A");
+        service.loginUser(userLogin);
+
+        AddPasswordRequest addRequest = new AddPasswordRequest();
+        addRequest.setPassword("myDeeDeji");
+        addRequest.setName("customSite");
+        addRequest.setUrl("www.myCustomSite.org");
+        addRequest.setUserName("customSite");
+        addRequest.setEmail(userRequest.getEmail());
+        service.addPassword(addRequest);
+
+        UpdatePasswordRequest updateRequest = new UpdatePasswordRequest();
+//        updateRequest.setName("changedName");
+        updateRequest.setPassword("changedPassword");
+//        updateRequest.setUserName("");
+        updateRequest.setEmail(userRequest.getEmail());
+
+        service.update(1, updateRequest);
+
+        RetrievePasswordRequest request = new RetrievePasswordRequest();
+        request.setEmail("mercy@gmail.com");
+        request.setUrl("www.myCustomSite.org");
+        RetrievePasswordResponse response = service.retrieve(request);
+
+        assertThat(response.getUserName(), is("customSite"));
+        assertThat(response.getPassword(), is("changedPassword"));
+    }
+
     @AfterEach
     void tearDown(){
         repository.deleteAll();
