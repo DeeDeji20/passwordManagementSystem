@@ -1,9 +1,6 @@
 package com.semicolon.africa.passwordManager.controllers;
 
-import com.semicolon.africa.passwordManager.dto.request.AddPasswordRequest;
-import com.semicolon.africa.passwordManager.dto.request.CreateUserRequest;
-import com.semicolon.africa.passwordManager.dto.request.RetrievePasswordRequest;
-import com.semicolon.africa.passwordManager.dto.request.UserLoginRequest;
+import com.semicolon.africa.passwordManager.dto.request.*;
 import com.semicolon.africa.passwordManager.dto.response.ApiResponse;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
 import com.semicolon.africa.passwordManager.exception.InvalidUserException;
@@ -13,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //@Controller
 @RequestMapping("/passwordManager")
@@ -68,5 +67,10 @@ public class PasswordManagerController {
         }catch (NonExistentUrlexception e){
             return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/passwords/{email}")
+    public List<PasswordToRegister> getPasswords(@PathVariable String email){
+        return passwordManager.getListOfUserPassword(email);
     }
 }
