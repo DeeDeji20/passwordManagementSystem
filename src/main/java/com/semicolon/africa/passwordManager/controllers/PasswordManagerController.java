@@ -2,6 +2,7 @@ package com.semicolon.africa.passwordManager.controllers;
 
 import com.semicolon.africa.passwordManager.dto.request.AddPasswordRequest;
 import com.semicolon.africa.passwordManager.dto.request.CreateUserRequest;
+import com.semicolon.africa.passwordManager.dto.request.UserLoginRequest;
 import com.semicolon.africa.passwordManager.dto.response.ApiResponse;
 import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
@@ -50,5 +51,10 @@ public class PasswordManagerController {
         }catch (InvalidUserException e){
             return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.NOT_ACCEPTABLE);
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody UserLoginRequest request){
+        return new ResponseEntity<>(passwordManager.loginUser(request), HttpStatus.OK);
     }
 }

@@ -136,6 +136,6 @@ public class PasswordManagerServiceImpl implements PasswordManager{
             }
         });
         database.save(user);
-        return null;
+        return new UpdateResponse("Updated successfully");
     }
 }
