@@ -2,10 +2,7 @@ package com.semicolon.africa.passwordManager.service;
 
 import com.semicolon.africa.passwordManager.data.model.User;
 import com.semicolon.africa.passwordManager.dto.request.*;
-import com.semicolon.africa.passwordManager.dto.response.AddPasswordResponse;
-import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
-import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
-import com.semicolon.africa.passwordManager.dto.response.UserLoginResponse;
+import com.semicolon.africa.passwordManager.dto.response.*;
 
 import java.util.List;
 
@@ -23,5 +20,5 @@ public interface PasswordManager {
 
     void delete(int passwordId, String email);
 
-    void update(int passwordId, UpdatePasswordRequest updateRequest);
+    UpdateResponse update(int passwordId, UpdatePasswordRequest updateRequest);
 }

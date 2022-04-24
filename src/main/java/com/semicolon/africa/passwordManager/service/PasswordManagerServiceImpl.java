@@ -3,10 +3,7 @@ package com.semicolon.africa.passwordManager.service;
 import com.semicolon.africa.passwordManager.data.model.User;
 import com.semicolon.africa.passwordManager.data.repository.PasswordManagerRepository;
 import com.semicolon.africa.passwordManager.dto.request.*;
-import com.semicolon.africa.passwordManager.dto.response.AddPasswordResponse;
-import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
-import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
-import com.semicolon.africa.passwordManager.dto.response.UserLoginResponse;
+import com.semicolon.africa.passwordManager.dto.response.*;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
 import com.semicolon.africa.passwordManager.exception.InvalidUserException;
 import com.semicolon.africa.passwordManager.exception.NonExistentUrlexception;
@@ -128,7 +125,7 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     }
 
     @Override
-    public void update(int passwordId, UpdatePasswordRequest updateRequest) {
+    public UpdateResponse update(int passwordId, UpdatePasswordRequest updateRequest) {
         User user = database.findByEmail(updateRequest.getEmail());
         List<PasswordToRegister> passwords =  user.getRegisteredPassword();
         passwords.forEach(password->{
@@ -138,7 +135,7 @@ public class PasswordManagerServiceImpl implements PasswordManager{
                 if(updateRequest.getUserName() != null) password.setUserName(updateRequest.getUserName());
             }
         });
-
         database.save(user);
+        return null;
     }
 }

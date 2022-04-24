@@ -2,10 +2,7 @@ package com.semicolon.africa.passwordManager.service;
 
 import com.semicolon.africa.passwordManager.data.repository.PasswordManagerRepository;
 import com.semicolon.africa.passwordManager.dto.request.*;
-import com.semicolon.africa.passwordManager.dto.response.AddPasswordResponse;
-import com.semicolon.africa.passwordManager.dto.response.CreateUserResponse;
-import com.semicolon.africa.passwordManager.dto.response.RetrievePasswordResponse;
-import com.semicolon.africa.passwordManager.dto.response.UserLoginResponse;
+import com.semicolon.africa.passwordManager.dto.response.*;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
 import com.semicolon.africa.passwordManager.exception.InvalidUserException;
 import com.semicolon.africa.passwordManager.exception.NonExistentUrlexception;
@@ -289,6 +286,35 @@ class PasswordManagerServiceTest {
     }
 
     @Test
+    void testThatUpdatedDetailsGiveAResponse(){
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setEmail("mercy@gmail.com");
+        userRequest.setPassword("mercygirl@!90A");
+        service.createUser(userRequest);
+
+        UserLoginRequest userLogin = new UserLoginRequest("mercy@gmail.com", "mercygirl@!90A");
+        service.loginUser(userLogin);
+
+        AddPasswordRequest addRequest = new AddPasswordRequest();
+        addRequest.setPassword("myDeeDeji");
+        addRequest.setName("customSite");
+        addRequest.setUrl("www.myCustomSite.org");
+        addRequest.setUserName("customSite");
+        addRequest.setEmail(userRequest.getEmail());
+        service.addPassword(addRequest);
+
+        UpdatePasswordRequest updateRequest = new UpdatePasswordRequest();
+        updateRequest.setName("changedName");
+        updateRequest.setPassword("changedPassword");
+        updateRequest.setUserName("changedUsername");
+        updateRequest.setEmail(userRequest.getEmail());
+
+        UpdateResponse response = service.update(1, updateRequest);
+        assertThat(response.getMessage(), is("Updated successfully"));
+
+    }
+
+    @Test
     void testThatOnlyPasswordCanBeUpdated(){
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setEmail("mercy@gmail.com");
@@ -307,9 +333,7 @@ class PasswordManagerServiceTest {
         service.addPassword(addRequest);
 
         UpdatePasswordRequest updateRequest = new UpdatePasswordRequest();
-//        updateRequest.setName("changedName");
         updateRequest.setPassword("changedPassword");
-//        updateRequest.setUserName("");
         updateRequest.setEmail(userRequest.getEmail());
 
         service.update(1, updateRequest);
