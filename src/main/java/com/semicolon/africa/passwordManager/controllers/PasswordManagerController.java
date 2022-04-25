@@ -1,5 +1,6 @@
 package com.semicolon.africa.passwordManager.controllers;
 
+import com.semicolon.africa.passwordManager.data.model.User;
 import com.semicolon.africa.passwordManager.dto.request.*;
 import com.semicolon.africa.passwordManager.dto.response.ApiResponse;
 import com.semicolon.africa.passwordManager.exception.InvalidPasswordException;
@@ -72,5 +73,15 @@ public class PasswordManagerController {
     @GetMapping("/passwords/{email}")
     public List<PasswordToRegister> getPasswords(@PathVariable String email){
         return passwordManager.getListOfUserPassword(email);
+    }
+
+    @GetMapping("/users")
+    public List<User> allUsers(){
+        return passwordManager.getAllUsers();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable int id, @RequestBody DeletePasswordRequest request){
+        return new ResponseEntity<>(passwordManager.delete(id, request), HttpStatus.OK);
     }
 }

@@ -240,10 +240,42 @@ class PasswordManagerServiceTest {
         addRequest2.setEmail(userRequest.getEmail());
         service.addPassword(addRequest2);
 
-        service.delete(1, userRequest.getEmail());
+        DeletePasswordRequest request = new DeletePasswordRequest(userRequest.getEmail());
+        service.delete(1, request);
 
      assertThat(service.getListOfUserPassword(userRequest.getEmail()).size(), is(1));
 
+    }
+
+    @Test
+    void testThatAPasswordCanBeDeletedFromListsOfPasswords_returnsResponse(){
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setEmail("mercy@gmail.com");
+        userRequest.setPassword("mercygirl@!90A");
+        service.createUser(userRequest);
+
+        UserLoginRequest userLogin = new UserLoginRequest("mercy@gmail.com", "mercygirl@!90A");
+        service.loginUser(userLogin);
+
+        AddPasswordRequest addRequest = new AddPasswordRequest();
+        addRequest.setPassword("myDeeDeji");
+        addRequest.setName("customSite");
+        addRequest.setUrl("www.myCustomSite.org");
+        addRequest.setUserName("customSite");
+        addRequest.setEmail(userRequest.getEmail());
+        service.addPassword(addRequest);
+
+        AddPasswordRequest addRequest2 = new AddPasswordRequest();
+        addRequest2.setPassword("randomPassword");
+        addRequest2.setName("dellwebsite");
+        addRequest2.setUrl("www.dell.org");
+        addRequest2.setUserName("cell");
+        addRequest2.setEmail(userRequest.getEmail());
+        service.addPassword(addRequest2);
+
+        DeletePasswordRequest request = new DeletePasswordRequest(userRequest.getEmail());
+        DeletePasswordResponse response = service.delete(1, request);
+        assertThat(response.getMessage(), is(addRequest.getUrl() + " has been deleted"));
     }
 
     @Test

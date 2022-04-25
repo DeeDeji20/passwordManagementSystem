@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.ListIterator;
 
+import static java.awt.SystemColor.info;
+
 
 @Service
 @Slf4j
@@ -32,7 +34,7 @@ public class PasswordManagerServiceImpl implements PasswordManager{
         user.setRegistrationPassword(request.getPassword());
         log.info("no. of users before save-->{}", database.findAll().size());
         database.save(user);
-        log.info("no. of users after save-->{}", database.findAll().size());
+//        log.info("no. of users after save-->{}", database.findAll().size());
 
         CreateUserResponse response = new CreateUserResponse();
         response.setMessage("User created");
@@ -76,14 +78,14 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     @Override
     public List<PasswordToRegister> getListOfUserPassword(String email) {
         User user = database.findByEmail(email);
-        log.info(String.valueOf(user.getRegisteredPassword().size()));
+//        log.info(String.valueOf(user.getRegisteredPassword().size()));
         return user.getRegisteredPassword();
     }
 
     @Override
     public RetrievePasswordResponse retrieve(RetrievePasswordRequest request, String url) {
         User user = database.findByEmail(request.getEmail());
-        log.info(user.getEmail());
+//        log.info(user.getEmail());
         List<PasswordToRegister> passwords = getListOfUserPassword(request.getEmail());
         RetrievePasswordResponse response = new RetrievePasswordResponse();
         passwords.forEach(password ->{
@@ -110,18 +112,31 @@ public class PasswordManagerServiceImpl implements PasswordManager{
     }
 
     @Override
-    public void delete(int passwordId, String email) {
-        User user = database.findByEmail(email);
+    public DeletePasswordResponse delete(int passwordId, DeletePasswordRequest request) {
+        log.info(passwordId+ " "+ request.getEmail());
+        User user = database.findByEmail(request.getEmail());
         List<PasswordToRegister> passwords = user.getRegisteredPassword();
+        DeletePasswordResponse response = new DeletePasswordResponse();
 
-        ListIterator<PasswordToRegister> iterator = passwords.listIterator();
-        while(iterator.hasNext()){
-            if(iterator.next().getId() == passwordId){
-                passwords.remove(iterator.next());
-                break;
+//        ListIterator<PasswordToRegister> iterator = passwords.listIterator();
+//        while(iterator.hasNext()){
+//            if(iterator.next().getId() == passwordId){
+////                response.setMessage(iterator.next().getUrl() +" has been deleted");
+//                log.info(iterator.next() + " =========>");
+//                passwords.remove(iterator.next());
+//                break;
+//            }
+//        }
+        passwords.removeIf(passwordToRegister -> {
+            boolean passwordRemoved = passwordToRegister.getId() == passwordId;
+            if(passwordRemoved){
+                response.setMessage(passwordToRegister.getUrl() + " has been deleted");
             }
-        }
+            return passwordRemoved;
+        });
         database.save(user);
+
+        return response;
     }
 
     @Override
